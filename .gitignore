@@ -1,0 +1,23 @@
+﻿# Raw dataset and generated patient files
+data/raw/
+data/processed/train/
+data/processed/val/
+data/processed/test/
+*.npz
+
+# Python cache and virtual environments
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Secrets and local settings
+.env
+.env.*
+!.env.example
+
+# Editor and operating-system files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

@@ -1,0 +1,29 @@
+{
+  "seed": 42,
+  "label_column": "SepsisLabel",
+  "train_fraction": 0.7,
+  "val_fraction": 0.15,
+  "test_fraction": 0.15,
+  "stratify_by": [
+    "source_group",
+    "sepsis_positive"
+  ],
+  "unit": "patient",
+  "raw_root": "data/raw",
+  "set_a_dir": "data/raw/training/training_setA",
+  "set_b_dir": "data/raw/training/training_setB",
+  "excluded": "data/raw/training/*.psv (not in training_setA or training_setB)",
+  "n_patients": 40336,
+  "n_set_a": 20336,
+  "n_set_b": 20000,
+  "sklearn_train_test_split": {
+    "first_call": "test_size=0.30, random_state=42, stratify=source_group+sepsis_positive",
+    "second_call": "split remaining 50/50 into val and test, same seed and strata"
+  },
+  "notes": [
+    "Each patient appears in exactly one split.",
+    "All hours from a patient stay in that patient's split.",
+    "Preprocessing statistics in later stages must be fit on train only.",
+    "The test split must not be used to choose model settings."
+  ]
+}
