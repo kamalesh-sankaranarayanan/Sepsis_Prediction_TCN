@@ -33,7 +33,54 @@ if hasattr(sys.stderr, "reconfigure"):
     sys.stderr.reconfigure(encoding="utf-8", errors="replace")
 
 ROOT = Path(__file__).resolve().parents[1]
-PY   = sys.executable
+
+
+def find_best_python() -> list[str]:
+    """Find a Python executable with numpy and torch installed."""
+    # 1. Test current sys.executable
+    try:
+        res = subprocess.run(
+            [sys.executable, "-c", "import numpy, torch"],
+            capture_output=True,
+            timeout=5,
+        )
+        if res.returncode == 0:
+            return [sys.executable]
+    except Exception:
+        pass
+
+    # 2. Known local Python 3.10 installation with all ML dependencies
+    known_path = Path(r"C:\Users\haris\AppData\Local\Programs\Python\Python310\python.exe")
+    if known_path.is_file():
+        try:
+            res = subprocess.run(
+                [str(known_path), "-c", "import numpy, torch"],
+                capture_output=True,
+                timeout=5,
+            )
+            if res.returncode == 0:
+                print(f"[INFO] Using ML Python environment: {known_path}")
+                return [str(known_path)]
+        except Exception:
+            pass
+
+    # 3. Windows py launcher for 3.10
+    try:
+        res = subprocess.run(
+            ["py", "-3.10", "-c", "import numpy, torch"],
+            capture_output=True,
+            timeout=5,
+        )
+        if res.returncode == 0:
+            print("[INFO] Using Python 3.10 via 'py -3.10'")
+            return ["py", "-3.10"]
+    except Exception:
+        pass
+
+    return [sys.executable]
+
+
+PY_CMD = find_best_python()
 
 
 def run(cmd: list[str], check: bool = True) -> int:
@@ -49,13 +96,13 @@ def run(cmd: list[str], check: bool = True) -> int:
 
 
 STAGES = {
-    1: ("Data Inspection",        [PY, "-X", "utf8", "src/data_inspection.py"]),
-    2: ("Data-Quality Audit",     [PY, "-X", "utf8", "src/data_quality_audit.py"]),
-    3: ("Preprocessing",          [PY, "-X", "utf8", "src/preprocessing.py"]),
+    1: ("Data Inspection",        PY_CMD + ["-X", "utf8", "src/data_inspection.py"]),
+    2: ("Data-Quality Audit",     PY_CMD + ["-X", "utf8", "src/data_quality_audit.py"]),
+    3: ("Preprocessing",          PY_CMD + ["-X", "utf8", "src/preprocessing.py"]),
     4: ("Train Baselines",        None),   # built dynamically
     5: ("Train Proposed TCN",     None),
-    6: ("SHAP Explainability",    [PY, "-X", "utf8", "src/explainability.py"]),
-    7: ("Visualize Results",      [PY, "-X", "utf8", "src/visualize_results.py"]),
+    6: ("SHAP Explainability",    PY_CMD + ["-X", "utf8", "src/explainability.py"]),
+    7: ("Visualize Results",      PY_CMD + ["-X", "utf8", "src/visualize_results.py"]),
 }
 
 
@@ -86,12 +133,12 @@ def main() -> None:
         print(f"{'='*65}")
 
         if stage_id == 4:
-            cmd = [PY, "-X", "utf8", "src/train_baselines.py", "--models"] + args.models
+            cmd = PY_CMD + ["-X", "utf8", "src/train_baselines.py", "--models"] + args.models
             if args.epochs:
                 cmd += ["--epochs", str(args.epochs)]
 
         elif stage_id == 5:
-            cmd = [PY, "-X", "utf8", "src/train_proposed_tcn.py"]
+            cmd = PY_CMD + ["-X", "utf8", "src/train_proposed_tcn.py"]
             if args.epochs:
                 cmd += ["--epochs", str(args.epochs)]
 
