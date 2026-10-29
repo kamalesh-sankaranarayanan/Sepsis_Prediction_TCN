@@ -120,6 +120,15 @@ def explain_tcn(
 
     model_path = MODELS_DIR / model_file
     if not model_path.exists():
+        for alt in [
+            model_file.replace("tcn_tcn_", "tcn_"),
+            model_file.replace("tcn_", ""),
+            f"tcn_{model_file}",
+        ]:
+            if (MODELS_DIR / alt).exists():
+                model_path = MODELS_DIR / alt
+                break
+    if not model_path.exists():
         print(f"  Model not found: {model_path.name} — skip.")
         return
 
@@ -182,7 +191,7 @@ def explain_tcn(
 
     # Plot
     safe_label = label.lower().replace(" ", "_")
-    X_plot = X_te[te_idx]
+    X_plot = X_te[te_idx[:len(sv)]]
 
     if not use_missingness:
         fig, ax = plt.subplots(figsize=(10, 8))
