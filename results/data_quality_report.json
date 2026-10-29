@@ -1,0 +1,25 @@
+{
+  "n_patients": 40336,
+  "n_hour_rows": 0,
+  "problems_found": [
+    {
+      "issue": "Extreme missingness (>90%) in lab features",
+      "severity": "MODERATE",
+      "details": "26 variables: ['Bilirubin_direct', 'Fibrinogen', 'TroponinI', 'Bilirubin_total', 'Alkalinephos', 'AST']",
+      "note": "Expected for ICU lab data; missingness indicators handle this.",
+      "action": "No deletion. Forward-fill + mean imputation already applied. Missingness indicators preserved in X[:,D:2D]."
+    }
+  ],
+  "missingness_case": {
+    "case": "A/B \u2014 missingness indicators are available",
+    "explanation": "preprocess.py saves X[:,D:2D] as the observed-observation mask (1=observed, 0=imputed). This is exactly the binary missingness indicator. The proposed missingness-aware TCN can use this directly. No fabrication of indicators is needed.",
+    "action": "Baseline TCN: X[:,0:D] only. Proposed TCN: X[:,0:D] \u2225 X[:,D:2D] (clinical values + mask). Both share identical imputation and scaling."
+  },
+  "dataset_classification": "READY_FOR_MODELING",
+  "remaining_limitations": [
+    "Lab features have 90-99% missingness \u2014 models must handle this via the missingness indicator approach.",
+    "Class imbalance is severe (~8% patient-level sepsis). Requires weighted loss or SMOTE on training data only.",
+    "SMOTE on flattened time-series sequences may destroy temporal structure \u2014 use class-weighted loss as primary strategy.",
+    "Raw .psv files are not included in the git repository. Audit relies on pre-computed artefacts for quantitative results."
+  ]
+}
