@@ -22,9 +22,15 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import os
 import subprocess
 import sys
 from pathlib import Path
+
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+if hasattr(sys.stderr, "reconfigure"):
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
 
 ROOT = Path(__file__).resolve().parents[1]
 PY   = sys.executable
@@ -32,7 +38,10 @@ PY   = sys.executable
 
 def run(cmd: list[str], check: bool = True) -> int:
     print(f"\n>>> {' '.join(cmd)}")
-    result = subprocess.run(cmd, cwd=str(ROOT))
+    env = os.environ.copy()
+    env["PYTHONUTF8"] = "1"
+    env["PYTHONIOENCODING"] = "utf-8"
+    result = subprocess.run(cmd, cwd=str(ROOT), env=env)
     if check and result.returncode != 0:
         print(f"FAILED with exit code {result.returncode}")
         sys.exit(result.returncode)
@@ -40,13 +49,13 @@ def run(cmd: list[str], check: bool = True) -> int:
 
 
 STAGES = {
-    1: ("Data Inspection",        [PY, "src/data_inspection.py"]),
-    2: ("Data-Quality Audit",     [PY, "src/data_quality_audit.py"]),
-    3: ("Preprocessing",          [PY, "src/preprocessing.py"]),
+    1: ("Data Inspection",        [PY, "-X", "utf8", "src/data_inspection.py"]),
+    2: ("Data-Quality Audit",     [PY, "-X", "utf8", "src/data_quality_audit.py"]),
+    3: ("Preprocessing",          [PY, "-X", "utf8", "src/preprocessing.py"]),
     4: ("Train Baselines",        None),   # built dynamically
     5: ("Train Proposed TCN",     None),
-    6: ("SHAP Explainability",    [PY, "src/explainability.py"]),
-    7: ("Visualize Results",      [PY, "src/visualize_results.py"]),
+    6: ("SHAP Explainability",    [PY, "-X", "utf8", "src/explainability.py"]),
+    7: ("Visualize Results",      [PY, "-X", "utf8", "src/visualize_results.py"]),
 }
 
 
@@ -77,12 +86,12 @@ def main() -> None:
         print(f"{'='*65}")
 
         if stage_id == 4:
-            cmd = [PY, "src/train_baselines.py", "--models"] + args.models
+            cmd = [PY, "-X", "utf8", "src/train_baselines.py", "--models"] + args.models
             if args.epochs:
                 cmd += ["--epochs", str(args.epochs)]
 
         elif stage_id == 5:
-            cmd = [PY, "src/train_proposed_tcn.py"]
+            cmd = [PY, "-X", "utf8", "src/train_proposed_tcn.py"]
             if args.epochs:
                 cmd += ["--epochs", str(args.epochs)]
 

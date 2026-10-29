@@ -16,6 +16,11 @@ Run:
 
 from __future__ import annotations
 
+import sys
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+if hasattr(sys.stderr, "reconfigure"):
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
 import json
 import sys
 from pathlib import Path
@@ -138,7 +143,7 @@ def inspect_missingness_summary() -> None:
           f"({', '.join(high_miss.index[:8].tolist())})")
     print(f"  Variables with 10-50% missing: {len(mod_miss)}  "
           f"({', '.join(mod_miss.index.tolist())})")
-    print(f"  Variables with ≤10% missing:  {len(low_miss)}  "
+    print(f"  Variables with <=10% missing: {len(low_miss)}  "
           f"({', '.join(low_miss.index.tolist())})")
 
 
