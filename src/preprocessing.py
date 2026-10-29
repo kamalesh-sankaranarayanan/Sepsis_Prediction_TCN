@@ -118,13 +118,10 @@ def main() -> None:
         [PY_EXE, "-X", "utf8", str(ROOT / "src" / "validate_processed.py")],
         capture_output=True, text=True, env=env
     )
-        [_sys.executable, str(ROOT / "src" / "validate_processed.py")],
-        capture_output=True, text=True
-    )
     print(result2.stdout)
     if result2.returncode != 0:
         print("POST-PROCESSING VALIDATION FAILED:", result2.stderr)
-        _sys.exit(1)
+        sys.exit(1)
     print("Preprocessing pipeline complete.")
 
 
