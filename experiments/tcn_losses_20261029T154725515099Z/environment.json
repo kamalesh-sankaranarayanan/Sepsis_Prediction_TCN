@@ -1,0 +1,14 @@
+{
+  "executable": "C:\\Users\\sanka\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "versions": {
+    "torch": "2.8.0",
+    "numpy": "2.3.3",
+    "pandas": "2.3.3",
+    "scikit-learn": "1.7.2",
+    "streamlit": "1.51.0",
+    "pytest": "9.1.1"
+  },
+  "git_status_at_implementation": " M PROJECT_CONTEXT_HANDOFF.md\n M README.md\n M research_report.md\n M src/config.py\n M src/evaluate.py\n M src/run_pipeline.py\n M src/sequence_builder.py\n M src/train_baselines.py\n M src/train_proposed_tcn.py\n?? UI_PLAN.md\n?? app.py\n?? experiments/\n?? src/inference.py\n?? src/run_experiments.py\n?? src/study.py\n?? tests/\n",
+  "packages_installed_for_task": false
+}

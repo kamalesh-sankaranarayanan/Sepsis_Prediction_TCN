@@ -21,9 +21,6 @@ MODELS_DIR    = ROOT / "models"
 LOGS_DIR      = ROOT / "logs"
 FIGURES_DIR   = ROOT / "figures"
 
-for _d in (RESULTS_DIR, MODELS_DIR, LOGS_DIR, FIGURES_DIR):
-    _d.mkdir(parents=True, exist_ok=True)
-
 # ---------------------------------------------------------------------------
 # Dataset
 # ---------------------------------------------------------------------------
@@ -57,7 +54,7 @@ SEED = 42
 # Sequence / model inputs
 # ---------------------------------------------------------------------------
 MAX_SEQ_LEN = 72          # cap ICU stay to 72 h for fixed-length batching
-STRIDE       = 1           # slide window by 1 hour when building sub-sequences
+STRIDE       = 1           # reserved; retained study uses prefixes, not sliding windows
 
 # ---------------------------------------------------------------------------
 # TCN hyper-parameters

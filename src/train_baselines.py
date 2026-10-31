@@ -41,6 +41,7 @@ sys.path.insert(0, str(ROOT / "src"))
 from config import (
     LR_CFG, MODELS_DIR, N_FEATURES, RESULTS_DIR, RNN_CFG,
     SEED, TCN_CFG, TRAIN_CFG,
+    MAX_SEQ_LEN,
 )
 from evaluate import (
     evaluate_sequence_model, evaluate_sklearn_model,
@@ -55,6 +56,7 @@ from sequence_builder import (
 torch.manual_seed(SEED)
 np.random.seed(SEED)
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
+RUN_LOG_DIR = ROOT / "logs"
 
 
 def banner(title: str) -> None:
@@ -161,6 +163,8 @@ def train_sequence_model(
     args,
 ) -> dict:
     banner(label)
+    torch.manual_seed(SEED)
+    np.random.seed(SEED)
 
     epochs     = args.epochs or train_cfg["epochs"]
     batch_size = train_cfg["batch_size"]
@@ -169,9 +173,9 @@ def train_sequence_model(
     patience   = train_cfg["patience"]
     grad_clip  = train_cfg["grad_clip"]
 
-    tr_ds = dataset_cls("train", max_seq_len=72)
-    vl_ds = dataset_cls("val",   max_seq_len=72)
-    te_ds = dataset_cls("test",  max_seq_len=72)
+    tr_ds = dataset_cls("train", max_seq_len=MAX_SEQ_LEN)
+    vl_ds = dataset_cls("val",   max_seq_len=MAX_SEQ_LEN)
+    te_ds = dataset_cls("test",  max_seq_len=MAX_SEQ_LEN)
 
     tr_ldr = make_loader(tr_ds, batch_size=batch_size, shuffle=True)
     vl_ldr = make_loader(vl_ds, batch_size=batch_size)
@@ -180,7 +184,7 @@ def train_sequence_model(
     model = build_model(model_name, n_input, model_cfg).to(DEVICE)
     print(f"  Parameters: {count_params(model):,}")
 
-    pos_w  = compute_pos_weight("train")
+    pos_w  = compute_pos_weight("train", max_seq_len=MAX_SEQ_LEN)
     print(f"  pos_weight: {pos_w:.2f}")
     loss_fn = nn.BCEWithLogitsLoss(
         pos_weight=torch.tensor(pos_w, device=DEVICE)
@@ -238,7 +242,7 @@ def train_sequence_model(
     train_time = time.perf_counter() - t0
 
     # Save training log
-    log_path = ROOT / "logs" / f"train_{model_name.lower()}.json"
+    log_path = RUN_LOG_DIR / f"train_{model_name.lower()}.json"
     log_path.parent.mkdir(parents=True, exist_ok=True)
     with open(log_path, "w") as f:
         json.dump(log_rows, f, indent=2)
@@ -269,13 +273,25 @@ def train_sequence_model(
 # ---------------------------------------------------------------------------
 
 def main() -> None:
+    global MODELS_DIR, RESULTS_DIR, RUN_LOG_DIR
     parser = argparse.ArgumentParser()
     parser.add_argument("--models", nargs="+",
                         default=["lr", "xgb", "lstm", "gru", "tcn"],
                         help="Which models to train")
     parser.add_argument("--epochs", type=int, default=None,
                         help="Override max epochs for sequence models")
+    parser.add_argument("--output-dir", type=Path, required=True,
+                        help="New directory under experiments/; legacy reproduction only, evaluates every model on test. Prefer run_experiments.py for selection.")
     args = parser.parse_args()
+    output = args.output_dir.resolve()
+    if ROOT / "experiments" not in output.parents:
+        parser.error("--output-dir must be a new directory under experiments/")
+    output.mkdir(parents=True, exist_ok=False)
+    MODELS_DIR, RESULTS_DIR, RUN_LOG_DIR = output / "models", output / "results", output / "logs"
+    import evaluate
+    evaluate.FIGURES_DIR = output / "figures"
+    for directory in (MODELS_DIR, RESULTS_DIR, RUN_LOG_DIR, evaluate.FIGURES_DIR):
+        directory.mkdir()
 
     proc_train = ROOT / "data" / "processed" / "train"
     if not proc_train.is_dir() or not any(proc_train.glob("*.npz")):

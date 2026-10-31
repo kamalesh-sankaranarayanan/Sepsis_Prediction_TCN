@@ -1,0 +1,43 @@
+{
+  "seeds": [
+    43,
+    44
+  ],
+  "reference_seed": 42,
+  "model": {
+    "num_channels": [
+      64,
+      64,
+      64,
+      64
+    ],
+    "kernel_size": 3,
+    "dropout": 0.2
+  },
+  "loss": "weighted_bce",
+  "lr": 0.001,
+  "weight_decay": 0.0001,
+  "epochs": 6,
+  "patience": 2,
+  "checkpoint_selection": "validation AUPRC",
+  "threshold_selection": "maximum validation F1 with FPR <= .03; unrestricted also recorded",
+  "scheduler": "ReduceLROnPlateau validation AUPRC, patience 1, factor .5",
+  "fixed_final_model": "C:\\Users\\sanka\\OneDrive\\Desktop\\SepsisPrediction\\experiments\\tcn_losses_20261029T154725515099Z\\weighted_bce.pt",
+  "final_checkpoint_sha256": "cceaa98d799fbea85c8e759885cbab9012e90fdb02469a243aec2b252776bc62",
+  "purpose": "independent training-seed variability only; no seed selection and no test evaluation",
+  "torch": "2.8.0+cpu",
+  "numpy": "2.3.3",
+  "threads": 4,
+  "manifest_sha256": "64eca4a130c0d1da3e7cc31d9f23fcacc0aef0b9fca7ec2f939f84977cba9b83",
+  "preprocessing_sha256": "9b9dcdd4f452cc7ea73a82cdb56c3f820530c41bac6e9b19e5c9988b872d3193",
+  "pos_weight": 71.84707530647987,
+  "train_hours": 1039892,
+  "val_hours": 223640,
+  "seed": 44,
+  "n_input": 80,
+  "max_rows": 72,
+  "best_epoch": 5,
+  "stopping_epoch": 6,
+  "actual_training_seconds": 171.65444939999725,
+  "checkpoint": "seed44\\best.pt"
+}

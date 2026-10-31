@@ -1,0 +1,77 @@
+{
+  "epochs": 3,
+  "patience": 2,
+  "seed": 42,
+  "repeat_seeds": [
+    43,
+    44
+  ],
+  "threads": 4,
+  "max_fpr": 0.03,
+  "bootstrap": 200,
+  "max_estimated_seconds": 1500.0,
+  "matrix": [
+    {
+      "name": "continuation_control",
+      "lr": 0.001,
+      "weight_decay": 0.0001
+    },
+    {
+      "name": "lower_lr",
+      "lr": 0.0003,
+      "weight_decay": 0.0001
+    },
+    {
+      "name": "stronger_decay",
+      "lr": 0.001,
+      "weight_decay": 0.0005
+    }
+  ],
+  "model": {
+    "num_channels": [
+      64,
+      64,
+      64,
+      64
+    ],
+    "kernel_size": 3,
+    "dropout": 0.2
+  },
+  "n_input": 80,
+  "max_rows": 72,
+  "loss": "weighted_bce",
+  "batch_size": 64,
+  "grad_clip": 1.0,
+  "warm_start": "C:\\Users\\sanka\\OneDrive\\Desktop\\SepsisPrediction\\experiments\\tcn_losses_20261029T154725515099Z\\weighted_bce.pt",
+  "warm_start_sha256": "cceaa98d799fbea85c8e759885cbab9012e90fdb02469a243aec2b252776bc62",
+  "optimizer": "fresh Adam per refinement; previous optimizer state was not saved",
+  "scheduler": "ReduceLROnPlateau, validation composite score, factor .5, patience 1",
+  "criterion": "0.50 relative AP + 0.25 relative F1 + 0.10 relative ROC + 0.075 relative precision + 0.075 relative recall",
+  "eligibility": {
+    "min_precision": 0.08,
+    "min_recall": 0.15,
+    "min_accuracy": 0.95,
+    "max_auroc_decline_from_reference": 0.005,
+    "max_fpr": 0.03
+  },
+  "selection": "declared primary seed chooses configuration; replication never selects a seed; primary checkpoint is final",
+  "replication_note": "Refinement randomness only; all seeds share a seed42-pretrained checkpoint",
+  "test_note": "Historically examined test cohort; no test data used for new selection",
+  "versions": {
+    "torch": "2.8.0",
+    "numpy": "2.3.3",
+    "pandas": "2.3.3",
+    "scikit-learn": "1.7.2",
+    "matplotlib": "3.10.8"
+  },
+  "python": "3.13.5 (tags/v3.13.5:6cb20a2, Jun 11 2025, 16:15:46) [MSC v.1943 64 bit (AMD64)]",
+  "device": "cpu",
+  "git_head": "43a2e7d2f2eec4375d1bb1672ee60093a11293e0",
+  "manifest_sha256": "64eca4a130c0d1da3e7cc31d9f23fcacc0aef0b9fca7ec2f939f84977cba9b83",
+  "preprocessing_sha256": "9b9dcdd4f452cc7ea73a82cdb56c3f820530c41bac6e9b19e5c9988b872d3193",
+  "pos_weight": 71.84707530647987,
+  "train_hours": 1039892,
+  "train_positive_hours": 14275,
+  "val_hours": 223640,
+  "val_positive_hours": 3029
+}

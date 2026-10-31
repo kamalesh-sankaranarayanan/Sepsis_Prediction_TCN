@@ -1,0 +1,28 @@
+{
+  "id": "frozen_v1",
+  "checkpoint": "frozen_reference.pt",
+  "validation": {
+    "accuracy": 0.9663566446074048,
+    "precision": 0.100160113858744,
+    "recall": 0.18586992406734895,
+    "f1": 0.13017341040462427,
+    "specificity": 0.9770727660905395,
+    "auroc": 0.7889244605350146,
+    "auprc": 0.06427447301660816,
+    "threshold": 0.7500504851341248,
+    "tn": 215553,
+    "fp": 5058,
+    "fn": 2466,
+    "tp": 563,
+    "hours": 223640,
+    "positive_hours": 3029,
+    "false_positive_rate": 0.022927233909460543,
+    "alert_fraction": 0.025134144160257558,
+    "false_positives_per_1000_negative_hours": 22.927233909460544
+  },
+  "validation_score": 1.0,
+  "best_epoch": 0,
+  "stopping_epoch": 0,
+  "used_test": false,
+  "primary_seed": 42
+}

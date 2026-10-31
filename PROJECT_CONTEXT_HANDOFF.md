@@ -2,6 +2,8 @@
 
 > **Purpose:** This document provides the complete, self-contained context of this project, codebase, experiments, empirical results, resolved technical issues, and next steps. You can provide this file to any new AI chat session to seamlessly resume work without loss of context.
 
+> **Current audit update (2026-10-29):** See Section 9 for verified local findings. Paths, Python environments, and Git/remote details below describe the historical workspace and must not be assumed current. The current workspace is `C:\Users\sanka\OneDrive\Desktop\SepsisPrediction`, on branch `harish`.
+
 ---
 
 ## 1. Project Overview & Research Objective
@@ -22,7 +24,7 @@ While conventional models treat missingness as a nuisance to be imputed away, ou
 * **Reference Work:** Sankaranarayanan (2025) — TCN with SMOTE and weighted loss for early sepsis prediction on PhysioNet 2019.
 * **Published Targets:** ~88% Accuracy, ~0.92 AUROC.
 * **Key Baseline Comparisons:** Logistic Regression (LR), XGBoost, LSTM, GRU, Baseline TCN.
-* **Imbalance Strategies:** SMOTE and positive-class weighted BCE loss.
+* **Implemented Imbalance Strategies:** Class-weighted LR, XGBoost scale_pos_weight, and weighted BCE; the ablation also includes unweighted BCE. SMOTE is not implemented.
 * **Interpretability:** SHAP feature importance.
 
 ---
@@ -41,9 +43,9 @@ While conventional models treat missingness as a nuisance to be imputed away, ou
   * **Split Leakage:** 0 overlap across all splits (`data/processed/split_manifest.csv`).
 * **Target Label (`SepsisLabel`):**
   * Sepsis-3 clinical criteria.
-  * Formatted with a **6-hour lead time** before clinical onset ($t-6$ hours).
+  * Raw labels are copied unchanged. The claimed six-hour lead time and clinical onset definition have not been independently verified.
   * **Patient-level prevalence:** 7.3% (2,932 positive, 37,404 negative).
-  * **Hour-level prospective prevalence:** **1.80%** positive hours (98.2% negative hours, ~55:1 ratio).
+  * **Overall retrospective hourly prevalence:** **1.798%** positive hours (27,916 / 1,552,210); overall negative-to-positive ratio 54.60:1.
 * **Feature Dimensionality ($D = 40$ features):**
   * **8 Vital signs:** HR, O2Sat, Temp, SBP, MAP, DBP, Resp, EtCO2
   * **26 Laboratory values:** BaseExcess, HCO3, FiO2, pH, PaCO2, SaO2, AST, BUN, Alkalinephos, Calcium, Chloride, Creatinine, Bilirubin_direct, Glucose, Lactate, Magnesium, Phosphate, Potassium, Bilirubin_total, TroponinI, Hct, Hgb, PTT, WBC, Fibrinogen, Platelets
@@ -94,7 +96,7 @@ Sepsis_Prediction_TCN/
 ## 4. Empirical Results & Findings
 
 ### A. Baseline Comparison Table (Test Set: 6,051 patients, ~225,000 test hours)
-Evaluated on the raw prospective test stream under real clinical prevalence (1.80% positive rate):
+Retrospective evaluation: LR/XGBoost use all 232,215 test hours (1.810% positive). Sequence models use each patient's first 72 available rows, totaling 222,297 hours (1.377% positive). Cross-family metrics therefore use different populations. XGBoost metrics remain saved results rather than independently reproduced results in the current audit.
 
 | Model | Accuracy | Precision | Recall | F1-Score | AUROC | AUPRC |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
@@ -125,16 +127,16 @@ Isolating the explicit effect of missingness indicators under identical conditio
 ### C. SHAP Explainability Findings
 * **XGBoost Top Features:** ICULOS (0.5255), Temperature (0.2355), HospAdmTime (0.2292), FiO2 (0.1888), Lactate (0.1859), Heart Rate (0.1641), Unit1 (0.1563), BUN (0.1245), WBC (0.1163), Creatinine (0.1111).
 * **Proposed TCN Top Features:** ICULOS, BUN, Temperature, Unit2, Unit1, SaO2, Heart Rate, **`Resp_miss`**, pH, Creatinine.
-* **Clinical Significance:** **`Resp_miss`** (the observation frequency indicator for respiratory rate) ranked in the **Top 8 most important features**, proving that the act of monitoring vitals more or less frequently is directly predictive of clinical deterioration.
+* **Attribution limitation:** The prior run reported `Resp_miss` in the top eight; this ranking was not independently reproduced. TCN SHAP uses isolated single-hour inputs without sequence history and does not prove MNAR or clinical causality.
 
 ---
 
 ## 5. Understanding the "88% Accuracy vs 0.92 AUROC" Question
 
 * **Why did our models get ~96% accuracy with 0.77 AUROC, while the paper reported 88% accuracy with 0.92 AUROC?**
-  * **Class Imbalance Realism:** In our evaluation, 98.2% of hours are negative. A dummy model predicting 0 gets 98.2% accuracy. If evaluated on this raw stream, an "88% accuracy" would imply an unacceptable 12% false alarm rate on healthy patients.
-  * **The SMOTE Factor:** The paper explicitly applied **SMOTE** to balance the training distribution. When evaluation is performed on a balanced or case-control sampled cohort (50% positive, 50% negative), a strong model scores **~88% accuracy, ~88% recall, and ~0.92 AUROC**.
-  * **Evaluation Standard:** Our evaluation reflects prospective, real-world deployment without artificial test-set balancing.
+  * **Class Imbalance:** Always-negative accuracy is 98.190% on the full test stream and 98.623% on the capped sequence test stream. Accuracy alone cannot determine false-positive rate.
+  * **Reference uncertainty:** The reference scores and evaluation protocol require original-source verification. Do not infer balanced test evaluation or attribute its AUROC to SMOTE without checking the source.
+  * **Evaluation scope:** Current results are retrospective hourly classification, not prospective deployment validation. Clinical lead time and official challenge utility have not been evaluated in this implementation.
 
 ---
 
@@ -185,9 +187,59 @@ Isolating the explicit effect of missingness indicators under identical conditio
 
 1. **Push branch to GitHub:** Fork repo on GitHub and push the `harish` branch.
 2. **Implement SMOTE Experiment:**
-   * Apply SMOTE to the training feature representations to reproduce the exact balanced evaluation regime of the reference paper and observe if AUROC scales towards 0.92.
+   * First verify the original reference protocol. Any later SMOTE experiment must preserve patient separation and leave the held-out evaluation cohort unchanged; no AUROC improvement is guaranteed.
 3. **Incorporate Derived Clinical Vitals:**
    * Add Shock Index ($\text{HR} / \text{SBP}$), Pulse Pressure ($\text{SBP} - \text{DBP}$), and 6-hour moving vital rates of change ($\Delta\text{HR}/\Delta t$).
 4. **Thesis / Paper Finalization:**
-   * [`research_report.md`](file:///d:/Final%20Year%20Project/Sepsis_Prediction_TCN/research_report.md) is already fully drafted with all 14 standard academic sections and exact figures ready for submission.
+   * `research_report.md` has 14 drafted sections. Reference verification, uncertainty analysis, and the documented limitations remain before submission.
 
+---
+
+## 9. Verified Local Audit Status (2026-10-29)
+
+**Accepted scope:** Retain and finalize the first-72-available-row sequence study. Preserve checkpoints and metrics; do not initiate full-stay retraining. The later master task authorizes a local Streamlit UI and bounded new first-72-row experiments while preserving historical artifacts. The UI is now implemented; no dependency installation or deployment was performed. See the implementation update below.
+
+* All 40,336 raw patient IDs exactly match the manifest and processed split files, with no cross-split patient-ID overlap.
+* Raw-to-processed labels, original observation masks, scaled clinical values, and elapsed-time channels match for every patient. Saved training means and scales match a training-only recalculation exactly.
+* Total hours: 1,552,210 (train 1,085,958; validation 234,037; test 232,215). Positive hours: 27,916. No label reversions were found.
+* ICULOS advances by one hour per row in every patient; 8,793 stays start above hour 1. Leading missingness ages start at one from the first available row.
+* Scaling uses observed training means and RMS deviations of filled values from those means, not conventional standard deviations around filled-data means.
+* Every saved sequence-training log contains five epochs; 50 is the configured maximum. Original training invocation and hardware are not established by these logs.
+* Logistic Regression and seven sequence checkpoints reproduced saved test classification metrics to four decimal places and confusion-matrix counts exactly using saved thresholds. LR emitted a scikit-learn version warning (saved 1.6.1; audit 1.7.2).
+* XGBoost remains unverified because its package is absent from registered Python environments. No packages were installed.
+* All seven sequence checkpoints reproduced their best logged validation AUROC and saved thresholds using the original validation F1 grid search (6,050 patients; 223,640 capped hours). LR threshold 0.78 was also reproduced on 234,037 uncapped validation hours (F1 0.1557; AUROC 0.7484). Training reproduction remains unverified. Single-run gains need uncertainty analysis.
+* Remaining implementation limitations: loaders do not enforce manifest membership at load time; STRIDE is unused; training hardcodes the first 72 rows; class weights count uncapped hours; threshold search is limited to 0.05 through 0.95, with both unweighted ablation thresholds at 0.05.
+* Clinical value ranges, sentinel zeros, source-paper claims, clinical lead time, and SHAP rankings remain unverified. A local Streamlit research UI now exists; there is no deployed clinical inference API.
+* The raw-data and checkpoint audits changed no artifacts. Subsequent documentation corrections affect only this handoff and the research report.
+* Quantified cap effect: the first-72-row policy excludes 5,255 / 1,154 / 1,143 positive hours in train / validation / test. It removes all positive labels from the retained prefixes of 508 / 113 / 111 otherwise-positive patients. Weighted sequence training uses ratio 54.6046 from all training hours, versus 71.8471 in retained training labels (approximately 24.0% lower). No weights or models were changed; the performance effect of changing this policy remains untested.
+
+
+
+## 10. Master Task Implementation Update (2026-10-29)
+
+The later master task authorized bounded new first-72-row experiments and a working local UI. This supersedes earlier planning-only restrictions, while preserving original data, splits, and historical experiment artifacts.
+
+* New shared study utilities enforce manifest membership and valid-timestep masking. Weights now count retained training hours; new thresholds cover all validation scores; legacy specificity calculation was corrected. Legacy training resets seeds, uses the configured cap, and requires a fresh experiments/ output directory. Pipeline stage 8 is the safe default.
+* Completed run: `experiments/tcn_losses_20261029T154725515099Z`. Three losses each ran six epochs. Weighted BCE was selected using validation AUPRC 0.064274; its epoch-6 checkpoint and threshold 0.7500504851 were locked before test evaluation.
+* Selected test scores: accuracy 96.78%, precision 9.84%, recall 16.41%, F1 12.30%, AUROC 0.7823, AUPRC 0.0633. Counts: TN 214639, FP 4598, FN 2558, TP 502. Precision, recall, F1, AUROC, and AUPRC improve over the historical proposed run; accuracy and specificity decrease. Changes versus historical training are not limited to the class weight, so do not claim a causal weighting-only improvement.
+* Exact configs, environment versions, source snapshots, logs, checkpoints, validation comparisons, final selection, test predictions, and REPORT.md are retained inside the isolated run. All 56 protected original artifact hashes match. Raw/processed patient files were only read.
+* Implemented `app.py` and `src/inference.py`: local CSV/PSV upload, exact preprocessing, real checkpoint scoring, hourly charts, aggregate comparison, clear limitations, and graceful invalid-input/missing-model errors. Patient data is not persisted. The completed selected candidate is the default; historical proposed remains available.
+* Final checks: 21 pytest tests passed; HTTP root and health endpoints returned 200; legacy overwrite guards passed; no visual browser review. No packages installed, no deployment, no Git commits/pushes/merges/deletions.
+* Commands: `python -B -m streamlit run app.py --server.address 127.0.0.1 --browser.gatherUsageStats false`; `python -B -m pytest -q -p no:cacheprovider tests`.
+* Remaining: XGBoost package absent, single-seed uncertainty, exact training portability, external validation/calibration, clinical value/sentinel checks, and verification of reference-paper and lead-time claims. This remains a research demonstration.
+
+
+## 11. Performance-Only V2 Follow-up (2026-10-29)
+
+* Actual architecture remains a causal missingness-aware TCN with 80 clinical/missingness inputs, without temporal attention or elapsed-time channels. No UI changes were made in this task.
+* Artifact directories: `experiments_v2/tcn_refine_20261029T170738771536Z` and `experiments_v2/independent_seeds_20261029T171824288587Z`, each with REPORT.md. All prior experiment outputs were preserved.
+* Reverified saved loss checkpoints on validation, manifest/statistics hashes, fixed populations, and capped-label weight 71.847075. Reused prior six-epoch BCE/weighted-BCE/focal evidence.
+* Three new common-warm-start refinements (control, lower LR, stronger decay) each stopped after two epochs. Best trained validation AUPRC: 0.061305 / 0.062443 / 0.061822, versus incumbent 0.064274. No refinement won; epoch-zero incumbent was retained.
+* New validation-only operating protocol: F1 maximum with FPR <=3%, minimum precision/recall/accuracy and AUROC guard; multi-metric selection score emphasizes AUPRC/F1. Full alternative operating points are saved. This is not a validated clinical threshold policy.
+* Final checkpoint and threshold are unchanged: V1 weighted seed42, threshold 0.7500504851. Test scores remain accuracy 96.78%, precision 9.84%, recall 16.41%, F1 12.30%, AUROC 0.7823, AUPRC 0.0633. No additional V2 improvement; score arrays exactly match V1. No losing or replication checkpoint was evaluated on test.
+* Independently trained the weighted six-epoch configuration from scratch for seeds43/44, selecting epochs6/5. These replications never change the locked final seed. Across42/43/44, validation AUPRC mean +/- SD = 0.063062 +/- 0.001258; F1 = 0.123952 +/- 0.005433; AUROC = 0.788273 +/- 0.003589.
+* Added 200-draw paired patient bootstrap: test F1 CI [0.099689,0.143636], AUROC [0.758182,0.805250], AUPRC [0.050005,0.077730]. Paired improvement intervals versus the original proposed model include zero. Do not describe the earlier gains as statistically conclusive.
+* Alarm burden: hourly FPR2.097%; 685/5722 (11.97%) negative-label prefixes have at least one threshold crossing. Prefix-level crossings are not clinical alarm episodes.
+* Added `src/experiment_protocol_v2.py`, `src/run_experiments_v2.py`, `src/repeat_selected_seeds.py`, and `tests/test_experiments_v2.py`. Updated only report/handoff documentation among existing sources for this round. All29 tests pass; all79 captured original artifact/UI hashes and38 first-phase snapshot hashes match. Raw/processed patient files were only read. No installs, dependency changes, resets, merges, commits, or pushes.
+* Commands: `python -B -m src.run_experiments_v2 --epochs 3 --patience 2 --repeat-seeds 43 44 --bootstrap 200 --threads 4 --max-estimated-seconds 1500`; `python -B -m src.repeat_selected_seeds --seeds 43 44 --threads 4 --max-estimated-seconds 1000`. Reproduce the original winning loss matrix with `python -B -X utf8 src/run_experiments.py --epochs 6 --patience 2 --seed 42 --threads 4 --max-estimated-seconds 1200`.
+* Next research step: preregister a larger training/architecture study and obtain genuinely new external data. Do not keep tuning against the historically examined test cohort. UI work remains outside this performance-only task.

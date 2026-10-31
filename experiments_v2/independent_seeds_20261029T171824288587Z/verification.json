@@ -1,0 +1,15 @@
+{
+  "pytest_passed": 29,
+  "preserved_original_ui_files": 79,
+  "prior_v2_files_verified": 38,
+  "selected_test_predictions_identical_to_v1": true,
+  "replication_test_evaluated": false,
+  "ui_modified": false,
+  "packages_installed": false,
+  "source_hashes": {
+    "src\\experiment_protocol_v2.py": "e9781908d56cef82d3aadc1027b5616b4ad79e7cc62d7d81b2e64fc31cb4abf9",
+    "src\\run_experiments_v2.py": "69a53fb81f377d05283849f304724da41c74c00f6ae11e71a2b0a673b84aa838",
+    "src\\repeat_selected_seeds.py": "f35a25e1bc2ee7806717d70cff04deaaf9c1a8fa509a82593b98ef27e17c4111",
+    "tests\\test_experiments_v2.py": "f1d09244ebac13020716da933779d6bb87f95d5399fcb5edfd210055643401df"
+  }
+}

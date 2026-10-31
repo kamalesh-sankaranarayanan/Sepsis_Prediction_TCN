@@ -1,0 +1,10 @@
+{
+  "pytest_passed": 21,
+  "pytest_command": "python -B -m pytest -q -p no:cacheprovider tests",
+  "http_root_status": 200,
+  "http_health_status": 200,
+  "visual_browser_review": false,
+  "legacy_output_guards_passed": true,
+  "original_artifact_hashes_match": true,
+  "selected_ui_model": "Validation-selected TCN: weighted_bce"
+}

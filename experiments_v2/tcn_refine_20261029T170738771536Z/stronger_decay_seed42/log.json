@@ -1,0 +1,130 @@
+[
+  {
+    "epoch": 1,
+    "mean_train_loss": 1.098116577879522,
+    "validation": {
+      "accuracy": 0.9703630835270971,
+      "precision": 0.09895252952975261,
+      "recall": 0.1465830307032024,
+      "f1": 0.11814795103778605,
+      "specificity": 0.9816736246152731,
+      "auroc": 0.7774896435133807,
+      "auprc": 0.05766979066218935,
+      "threshold": 0.8499124050140381,
+      "tn": 216568,
+      "fp": 4043,
+      "fn": 2585,
+      "tp": 444,
+      "hours": 223640,
+      "positive_hours": 3029,
+      "false_positive_rate": 0.018326375384726964,
+      "alert_fraction": 0.02006349490252191,
+      "false_positives_per_1000_negative_hours": 18.326375384726965
+    },
+    "validation_score": null,
+    "operating_points": {
+      "selected": {
+        "threshold": 0.8499124050140381,
+        "precision": 0.09895252952975261,
+        "recall": 0.1465830307032024,
+        "f1": 0.11814795103778605,
+        "false_positive_rate": 0.018326375384726964,
+        "tp": 444,
+        "fp": 4043
+      },
+      "reason": "Maximum validation F1 subject to hourly FPR <= 0.030; lowest threshold wins ties",
+      "unrestricted_max_f1": {
+        "threshold": 0.8499124050140381,
+        "precision": 0.09895252952975261,
+        "recall": 0.1465830307032024,
+        "f1": 0.11814795103778605,
+        "false_positive_rate": 0.018326375384726964,
+        "tp": 444,
+        "fp": 4043
+      },
+      "precision_at_least_10pct": {
+        "threshold": 0.8515053391456604,
+        "precision": 0.1,
+        "recall": 0.14229118520964015,
+        "f1": 0.11745469410001362,
+        "false_positive_rate": 0.017582985435903014,
+        "tp": 431,
+        "fp": 3879
+      },
+      "precision_at_least_15pct": {
+        "threshold": 0.8881816267967224,
+        "precision": 0.15004336513443192,
+        "recall": 0.057114559260482006,
+        "f1": 0.08273553323768532,
+        "false_positive_rate": 0.00444220823077725,
+        "tp": 173,
+        "fp": 980
+      },
+      "recall_at_least_20pct": null
+    }
+  },
+  {
+    "epoch": 2,
+    "mean_train_loss": 1.0806118037412946,
+    "validation": {
+      "accuracy": 0.9672464675371132,
+      "precision": 0.09517527327553713,
+      "recall": 0.16672169032684053,
+      "f1": 0.12117576484703059,
+      "specificity": 0.9782377125347331,
+      "auroc": 0.7899198869365358,
+      "auprc": 0.06182176932661977,
+      "threshold": 0.8612446188926697,
+      "tn": 215810,
+      "fp": 4801,
+      "fn": 2524,
+      "tp": 505,
+      "hours": 223640,
+      "positive_hours": 3029,
+      "false_positive_rate": 0.021762287465266917,
+      "alert_fraction": 0.02372563047755321,
+      "false_positives_per_1000_negative_hours": 21.762287465266915
+    },
+    "validation_score": 0.9523070210295627,
+    "operating_points": {
+      "selected": {
+        "threshold": 0.8612446188926697,
+        "precision": 0.09517527327553713,
+        "recall": 0.16672169032684053,
+        "f1": 0.12117576484703059,
+        "false_positive_rate": 0.021762287465266917,
+        "tp": 505,
+        "fp": 4801
+      },
+      "reason": "Maximum validation F1 subject to hourly FPR <= 0.030; lowest threshold wins ties",
+      "unrestricted_max_f1": {
+        "threshold": 0.8612446188926697,
+        "precision": 0.09517527327553713,
+        "recall": 0.16672169032684053,
+        "f1": 0.12117576484703059,
+        "false_positive_rate": 0.021762287465266917,
+        "tp": 505,
+        "fp": 4801
+      },
+      "precision_at_least_10pct": {
+        "threshold": 0.8696410655975342,
+        "precision": 0.1,
+        "recall": 0.14526246285902938,
+        "f1": 0.11845470453627675,
+        "false_positive_rate": 0.01795014754477338,
+        "tp": 440,
+        "fp": 3960
+      },
+      "precision_at_least_15pct": {
+        "threshold": 0.9011790156364441,
+        "precision": 0.15,
+        "recall": 0.08517662594915813,
+        "f1": 0.10865445356917246,
+        "false_positive_rate": 0.006627049421833,
+        "tp": 258,
+        "fp": 1462
+      },
+      "recall_at_least_20pct": null
+    }
+  }
+]

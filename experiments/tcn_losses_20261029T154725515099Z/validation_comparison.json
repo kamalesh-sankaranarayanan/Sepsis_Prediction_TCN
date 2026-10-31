@@ -1,0 +1,93 @@
+[
+  {
+    "name": "historical_proposed_retuned",
+    "checkpoint": "reference.pt",
+    "epochs_trained": 0,
+    "validation": {
+      "accuracy": 0.9715301377213379,
+      "precision": 0.1074788334901223,
+      "recall": 0.1508748761967646,
+      "f1": 0.12553220711440735,
+      "specificity": 0.9827977752695922,
+      "auroc": 0.7857440657408628,
+      "auprc": 0.059715005924567785,
+      "threshold": 0.05235591530799866,
+      "tn": 216816,
+      "fp": 3795,
+      "fn": 2572,
+      "tp": 457,
+      "hours": 223640,
+      "positive_hours": 3029
+    },
+    "source_checkpoint_sha256": "c6c0f53ca636f9d5ab9bc4ad81b568cc50eae7adf30e35fd24bec37df3675af5"
+  },
+  {
+    "name": "bce",
+    "checkpoint": "bce.pt",
+    "validation": {
+      "accuracy": 0.9595957789304239,
+      "precision": 0.08429065743944637,
+      "recall": 0.2010564542753384,
+      "f1": 0.11878291398478642,
+      "specificity": 0.970010561576712,
+      "auroc": 0.7849057968854017,
+      "auprc": 0.06088129187307151,
+      "threshold": 0.04384929686784744,
+      "tn": 213995,
+      "fp": 6616,
+      "fn": 2420,
+      "tp": 609,
+      "hours": 223640,
+      "positive_hours": 3029
+    },
+    "best_epoch": 5,
+    "epochs_trained": 6,
+    "training_seconds": 353.067006199999
+  },
+  {
+    "name": "weighted_bce",
+    "checkpoint": "weighted_bce.pt",
+    "validation": {
+      "accuracy": 0.9663566446074048,
+      "precision": 0.100160113858744,
+      "recall": 0.18586992406734895,
+      "f1": 0.13017341040462427,
+      "specificity": 0.9770727660905395,
+      "auroc": 0.7889244605350146,
+      "auprc": 0.06427447301660816,
+      "threshold": 0.7500504851341248,
+      "tn": 215553,
+      "fp": 5058,
+      "fn": 2466,
+      "tp": 563,
+      "hours": 223640,
+      "positive_hours": 3029
+    },
+    "best_epoch": 6,
+    "epochs_trained": 6,
+    "training_seconds": 325.9020472000011
+  },
+  {
+    "name": "focal",
+    "checkpoint": "focal.pt",
+    "validation": {
+      "accuracy": 0.9646664281881595,
+      "precision": 0.09167085637673873,
+      "recall": 0.180587652690657,
+      "f1": 0.1216096042685638,
+      "specificity": 0.9754318687644769,
+      "auroc": 0.7786559270706022,
+      "auprc": 0.05670431740091967,
+      "threshold": 0.297896146774292,
+      "tn": 215191,
+      "fp": 5420,
+      "fn": 2482,
+      "tp": 547,
+      "hours": 223640,
+      "positive_hours": 3029
+    },
+    "best_epoch": 6,
+    "epochs_trained": 6,
+    "training_seconds": 496.7289517999998
+  }
+]

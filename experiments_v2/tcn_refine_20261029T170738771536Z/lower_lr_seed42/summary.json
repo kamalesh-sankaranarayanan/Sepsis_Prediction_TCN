@@ -1,0 +1,81 @@
+{
+  "id": "lower_lr_seed42",
+  "configuration": {
+    "name": "lower_lr",
+    "lr": 0.0003,
+    "weight_decay": 0.0001
+  },
+  "seed": 42,
+  "checkpoint": "lower_lr_seed42\\best.pt",
+  "best_epoch": 0,
+  "stopping_epoch": 2,
+  "validation": {
+    "accuracy": 0.9663566446074048,
+    "precision": 0.100160113858744,
+    "recall": 0.18586992406734895,
+    "f1": 0.13017341040462427,
+    "specificity": 0.9770727660905395,
+    "auroc": 0.7889244605350146,
+    "auprc": 0.06427447301660816,
+    "threshold": 0.7500504851341248,
+    "tn": 215553,
+    "fp": 5058,
+    "fn": 2466,
+    "tp": 563,
+    "hours": 223640,
+    "positive_hours": 3029,
+    "false_positive_rate": 0.022927233909460543,
+    "alert_fraction": 0.025134144160257558,
+    "false_positives_per_1000_negative_hours": 22.927233909460544
+  },
+  "validation_score": 1.0,
+  "operating_points": {
+    "selected": {
+      "threshold": 0.7500504851341248,
+      "precision": 0.100160113858744,
+      "recall": 0.18586992406734895,
+      "f1": 0.13017341040462427,
+      "false_positive_rate": 0.022927233909460543,
+      "tp": 563,
+      "fp": 5058
+    },
+    "reason": "Maximum validation F1 subject to hourly FPR <= 0.030; lowest threshold wins ties",
+    "unrestricted_max_f1": {
+      "threshold": 0.7500504851341248,
+      "precision": 0.100160113858744,
+      "recall": 0.18586992406734895,
+      "f1": 0.13017341040462427,
+      "false_positive_rate": 0.022927233909460543,
+      "tp": 563,
+      "fp": 5058
+    },
+    "precision_at_least_10pct": {
+      "threshold": 0.749922513961792,
+      "precision": 0.1,
+      "recall": 0.18586992406734895,
+      "f1": 0.13003811063633214,
+      "false_positive_rate": 0.02296802969933503,
+      "tp": 563,
+      "fp": 5067
+    },
+    "precision_at_least_15pct": {
+      "threshold": 0.8129291534423828,
+      "precision": 0.15,
+      "recall": 0.07527236711786069,
+      "f1": 0.10024181138711805,
+      "false_positive_rate": 0.005856462279759395,
+      "tp": 228,
+      "fp": 1292
+    },
+    "recall_at_least_20pct": {
+      "threshold": 0.7372917532920837,
+      "precision": 0.0925700365408039,
+      "recall": 0.20072631231429514,
+      "f1": 0.12670626237365842,
+      "false_positive_rate": 0.02701587862799226,
+      "tp": 608,
+      "fp": 5960
+    }
+  },
+  "training_seconds": 171.21055389999674
+}

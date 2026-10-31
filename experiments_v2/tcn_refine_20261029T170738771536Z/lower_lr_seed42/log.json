@@ -1,0 +1,138 @@
+[
+  {
+    "epoch": 1,
+    "mean_train_loss": 1.0528100394608833,
+    "validation": {
+      "accuracy": 0.9698265068860669,
+      "precision": 0.10156417398757232,
+      "recall": 0.15648728953449983,
+      "f1": 0.12318087318087319,
+      "specificity": 0.9809936947840316,
+      "auroc": 0.7901740356836244,
+      "auprc": 0.06244319075519374,
+      "threshold": 0.8478196859359741,
+      "tn": 216418,
+      "fp": 4193,
+      "fn": 2555,
+      "tp": 474,
+      "hours": 223640,
+      "positive_hours": 3029,
+      "false_positive_rate": 0.01900630521596838,
+      "alert_fraction": 0.02086835986406725,
+      "false_positives_per_1000_negative_hours": 19.00630521596838
+    },
+    "validation_score": 0.9616785526755369,
+    "operating_points": {
+      "selected": {
+        "threshold": 0.8478196859359741,
+        "precision": 0.10156417398757232,
+        "recall": 0.15648728953449983,
+        "f1": 0.12318087318087319,
+        "false_positive_rate": 0.01900630521596838,
+        "tp": 474,
+        "fp": 4193
+      },
+      "reason": "Maximum validation F1 subject to hourly FPR <= 0.030; lowest threshold wins ties",
+      "unrestricted_max_f1": {
+        "threshold": 0.8478196859359741,
+        "precision": 0.10156417398757232,
+        "recall": 0.15648728953449983,
+        "f1": 0.12318087318087319,
+        "false_positive_rate": 0.01900630521596838,
+        "tp": 474,
+        "fp": 4193
+      },
+      "precision_at_least_10pct": {
+        "threshold": 0.8467385172843933,
+        "precision": 0.1,
+        "recall": 0.1574777154176296,
+        "f1": 0.12232337479163996,
+        "false_positive_rate": 0.019459591770129323,
+        "tp": 477,
+        "fp": 4293
+      },
+      "precision_at_least_15pct": {
+        "threshold": 0.8886890411376953,
+        "precision": 0.15003441156228492,
+        "recall": 0.07197094750742819,
+        "f1": 0.09727800089245872,
+        "false_positive_rate": 0.0055980889438876575,
+        "tp": 218,
+        "fp": 1235
+      },
+      "recall_at_least_20pct": {
+        "threshold": 0.8227800726890564,
+        "precision": 0.08438936081325721,
+        "recall": 0.20006602839220866,
+        "f1": 0.11870714985308521,
+        "false_positive_rate": 0.029803590936082064,
+        "tp": 606,
+        "fp": 6575
+      }
+    }
+  },
+  {
+    "epoch": 2,
+    "mean_train_loss": 1.0278989722262775,
+    "validation": {
+      "accuracy": 0.9680602754426757,
+      "precision": 0.09698275862068965,
+      "recall": 0.16342027071640805,
+      "f1": 0.1217263002582073,
+      "specificity": 0.9791080227187221,
+      "auroc": 0.790638323677544,
+      "auprc": 0.06188089675247527,
+      "threshold": 0.8548434376716614,
+      "tn": 216002,
+      "fp": 4609,
+      "fn": 2534,
+      "tp": 495,
+      "hours": 223640,
+      "positive_hours": 3029,
+      "false_positive_rate": 0.020891977281277906,
+      "alert_fraction": 0.022822393131818997,
+      "false_positives_per_1000_negative_hours": 20.891977281277907
+    },
+    "validation_score": 0.9539366560998641,
+    "operating_points": {
+      "selected": {
+        "threshold": 0.8548434376716614,
+        "precision": 0.09698275862068965,
+        "recall": 0.16342027071640805,
+        "f1": 0.1217263002582073,
+        "false_positive_rate": 0.020891977281277906,
+        "tp": 495,
+        "fp": 4609
+      },
+      "reason": "Maximum validation F1 subject to hourly FPR <= 0.030; lowest threshold wins ties",
+      "unrestricted_max_f1": {
+        "threshold": 0.8548434376716614,
+        "precision": 0.09698275862068965,
+        "recall": 0.16342027071640805,
+        "f1": 0.1217263002582073,
+        "false_positive_rate": 0.020891977281277906,
+        "tp": 495,
+        "fp": 4609
+      },
+      "precision_at_least_10pct": {
+        "threshold": 0.8607203364372253,
+        "precision": 0.1,
+        "recall": 0.1521954440409376,
+        "f1": 0.12069642623380024,
+        "false_positive_rate": 0.018806859132137563,
+        "tp": 461,
+        "fp": 4149
+      },
+      "precision_at_least_15pct": {
+        "threshold": 0.9007664322853088,
+        "precision": 0.15006821282401092,
+        "recall": 0.07263123142951469,
+        "f1": 0.09788654060066741,
+        "false_positive_rate": 0.0056479504648453615,
+        "tp": 220,
+        "fp": 1246
+      },
+      "recall_at_least_20pct": null
+    }
+  }
+]

@@ -43,7 +43,6 @@ from sklearn.metrics import (
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 FIGURES_DIR = ROOT / "figures"
-FIGURES_DIR.mkdir(parents=True, exist_ok=True)
 
 
 # ---------------------------------------------------------------------------
@@ -113,7 +112,10 @@ def optimal_threshold(
 
     metric : 'f1' | 'recall' | 'precision' | 'balanced'
     """
-    thresholds = np.linspace(0.05, 0.95, 91)
+    if metric == "f1":
+        from study import best_f1_threshold
+        return best_f1_threshold(y_true, y_prob)
+    thresholds = np.unique(np.concatenate(([0.0], y_prob, [1.0])))
     best_t, best_val = 0.5, -1.0
 
     for t in thresholds:
@@ -126,7 +128,8 @@ def optimal_threshold(
             v = precision_score(y_true, y_pred, zero_division=0)
         elif metric == "balanced":
             rec  = recall_score(y_true, y_pred, zero_division=0)
-            spec = (y_true[y_pred == 0] == 0).mean() if (y_pred == 0).any() else 0.0
+            negative = y_true == 0
+            spec = float((y_pred[negative] == 0).mean()) if negative.any() else 0.0
             v    = (rec + spec) / 2
         else:
             raise ValueError(f"Unknown metric: {metric}")
@@ -240,6 +243,7 @@ def confusion_matrix_plot(
     plt.tight_layout()
 
     if save:
+        FIGURES_DIR.mkdir(parents=True, exist_ok=True)
         p = FIGURES_DIR / f"cm_{label.lower().replace(' ', '_')}.png"
         fig.savefig(p, dpi=150)
         print(f"  Saved: {p.relative_to(ROOT)}")
@@ -269,6 +273,7 @@ def roc_curve_plot(
     plt.tight_layout()
 
     if save:
+        FIGURES_DIR.mkdir(parents=True, exist_ok=True)
         p = FIGURES_DIR / filename
         fig.savefig(p, dpi=150)
         print(f"  Saved: {p.relative_to(ROOT)}")
@@ -294,6 +299,7 @@ def pr_curve_plot(
     plt.tight_layout()
 
     if save:
+        FIGURES_DIR.mkdir(parents=True, exist_ok=True)
         p = FIGURES_DIR / filename
         fig.savefig(p, dpi=150)
         print(f"  Saved: {p.relative_to(ROOT)}")

@@ -37,6 +37,7 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from config import (
     MODELS_DIR, N_FEATURES, RESULTS_DIR, SEED, TCN_CFG, TRAIN_CFG,
+    MAX_SEQ_LEN,
 )
 from evaluate import (
     evaluate_sequence_model, optimal_threshold,
@@ -51,6 +52,7 @@ torch.manual_seed(SEED)
 np.random.seed(SEED)
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 D = N_FEATURES
+RUN_LOG_DIR = ROOT / "logs"
 
 
 def banner(title: str) -> None:
@@ -70,13 +72,15 @@ def train_tcn(
 ) -> tuple[dict, np.ndarray, np.ndarray]:
 
     banner(label)
+    torch.manual_seed(SEED)
+    np.random.seed(SEED)
 
-    n_input = dataset_cls("train", max_seq_len=72).n_input
+    n_input = dataset_cls("train", max_seq_len=MAX_SEQ_LEN).n_input
     print(f"  Input features: {n_input}")
 
-    tr_ds = dataset_cls("train", max_seq_len=72)
-    vl_ds = dataset_cls("val",   max_seq_len=72)
-    te_ds = dataset_cls("test",  max_seq_len=72)
+    tr_ds = dataset_cls("train", max_seq_len=MAX_SEQ_LEN)
+    vl_ds = dataset_cls("val",   max_seq_len=MAX_SEQ_LEN)
+    te_ds = dataset_cls("test",  max_seq_len=MAX_SEQ_LEN)
 
     tr_ldr = make_loader(tr_ds, batch_size=TRAIN_CFG["batch_size"], shuffle=True)
     vl_ldr = make_loader(vl_ds, batch_size=TRAIN_CFG["batch_size"])
@@ -86,7 +90,7 @@ def train_tcn(
     print(f"  Parameters: {count_params(model):,}")
 
     if use_pos_weight:
-        pos_w  = compute_pos_weight("train")
+        pos_w  = compute_pos_weight("train", max_seq_len=MAX_SEQ_LEN)
         print(f"  pos_weight: {pos_w:.2f}")
         loss_fn = nn.BCEWithLogitsLoss(
             pos_weight=torch.tensor(pos_w, device=DEVICE)
@@ -144,7 +148,7 @@ def train_tcn(
 
     train_time = time.perf_counter() - t0
 
-    log_path = ROOT / "logs" / f"train_{safe_label}.json"
+    log_path = RUN_LOG_DIR / f"train_{safe_label}.json"
     log_path.parent.mkdir(parents=True, exist_ok=True)
     with open(log_path, "w") as f:
         json.dump(log_rows, f, indent=2)
@@ -174,9 +178,21 @@ def train_tcn(
 # ---------------------------------------------------------------------------
 
 def main() -> None:
+    global MODELS_DIR, RESULTS_DIR, RUN_LOG_DIR
     parser = argparse.ArgumentParser()
     parser.add_argument("--epochs", type=int, default=None)
+    parser.add_argument("--output-dir", type=Path, required=True,
+                        help="New directory under experiments/; legacy ablation evaluates each model on test. Prefer run_experiments.py.")
     args  = parser.parse_args()
+    output = args.output_dir.resolve()
+    if ROOT / "experiments" not in output.parents:
+        parser.error("--output-dir must be a new directory under experiments/")
+    output.mkdir(parents=True, exist_ok=False)
+    MODELS_DIR, RESULTS_DIR, RUN_LOG_DIR = output / "models", output / "results", output / "logs"
+    import evaluate
+    evaluate.FIGURES_DIR = output / "figures"
+    for directory in (MODELS_DIR, RESULTS_DIR, RUN_LOG_DIR, evaluate.FIGURES_DIR):
+        directory.mkdir()
 
     proc_train = ROOT / "data" / "processed" / "train"
     if not proc_train.is_dir() or not any(proc_train.glob("*.npz")):

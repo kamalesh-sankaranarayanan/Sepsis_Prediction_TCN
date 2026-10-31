@@ -1,0 +1,12 @@
+{
+  "name": "stronger_decay",
+  "lr": 0.001,
+  "weight_decay": 0.0005,
+  "seed": 42,
+  "loss": "weighted_bce",
+  "pos_weight": 71.84707530647987,
+  "optimizer_reset": true,
+  "warm_start": "C:\\Users\\sanka\\OneDrive\\Desktop\\SepsisPrediction\\experiments\\tcn_losses_20261029T154725515099Z\\weighted_bce.pt",
+  "max_epochs": 3,
+  "patience": 2
+}

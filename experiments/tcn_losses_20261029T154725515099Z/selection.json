@@ -1,0 +1,38 @@
+{
+  "name": "weighted_bce",
+  "checkpoint": "weighted_bce.pt",
+  "validation": {
+    "accuracy": 0.9663566446074048,
+    "precision": 0.100160113858744,
+    "recall": 0.18586992406734895,
+    "f1": 0.13017341040462427,
+    "specificity": 0.9770727660905395,
+    "auroc": 0.7889244605350146,
+    "auprc": 0.06427447301660816,
+    "threshold": 0.7500504851341248,
+    "tn": 215553,
+    "fp": 5058,
+    "fn": 2466,
+    "tp": 563,
+    "hours": 223640,
+    "positive_hours": 3029
+  },
+  "best_epoch": 6,
+  "epochs_trained": 6,
+  "training_seconds": 325.9020472000011,
+  "model_cfg": {
+    "num_channels": [
+      64,
+      64,
+      64,
+      64
+    ],
+    "kernel_size": 3,
+    "dropout": 0.2
+  },
+  "n_input": 80,
+  "max_rows": 72,
+  "checkpoint_sha256": "cceaa98d799fbea85c8e759885cbab9012e90fdb02469a243aec2b252776bc62",
+  "preprocessing_sha256": "9b9dcdd4f452cc7ea73a82cdb56c3f820530c41bac6e9b19e5c9988b872d3193",
+  "selection_used_test": false
+}

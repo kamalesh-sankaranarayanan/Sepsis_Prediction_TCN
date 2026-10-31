@@ -39,6 +39,7 @@ from config import (
     N_FEATURES,
     PREPROCESSING_CFG,
     SEED,
+    MAX_SEQ_LEN,
 )
 
 D = N_FEATURES   # 40 features
@@ -60,13 +61,8 @@ def load_patient(path: Path) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
 def _get_split_paths(
     split: Literal["train", "val", "test"],
 ) -> list[Path]:
-    split_dir = DATA_PROC / split
-    if not split_dir.is_dir():
-        raise FileNotFoundError(
-            f"Split directory not found: {split_dir}\n"
-            f"Run: python src/preprocess.py"
-        )
-    return sorted(split_dir.glob("*.npz"))
+    from study import split_paths
+    return split_paths(split, ROOT)
 
 
 # ---------------------------------------------------------------------------
@@ -277,13 +273,15 @@ def flat_loader(
 # Positive-weight for BCEWithLogitsLoss
 # ---------------------------------------------------------------------------
 
-def compute_pos_weight(split: str = "train") -> float:
-    """Compute neg/pos ratio from training labels for weighted BCE."""
+def compute_pos_weight(split: str = "train", max_seq_len: int | None = MAX_SEQ_LEN) -> float:
+    """Count exactly the retained valid timesteps; None explicitly means full stay."""
     paths = _get_split_paths(split)
     total_pos = total_neg = 0
     for p in paths:
         with np.load(p, allow_pickle=False) as z:
             y = z["y"]
+        if max_seq_len is not None:
+            y = y[:max_seq_len]
         total_pos += int((y == 1).sum())
         total_neg += int((y == 0).sum())
     return total_neg / max(total_pos, 1)

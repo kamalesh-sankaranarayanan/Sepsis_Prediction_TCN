@@ -1,0 +1,181 @@
+{
+  "method": "paired patient-cluster percentile bootstrap; 95% intervals",
+  "seed": 2026,
+  "requested_replicates": 200,
+  "valid_replicates": 200,
+  "patients": 6051,
+  "intervals": {
+    "selected": {
+      "accuracy": {
+        "lower": 0.9651312478426509,
+        "upper": 0.9700665757076493
+      },
+      "precision": {
+        "lower": 0.07983264825288104,
+        "upper": 0.11606176013156637
+      },
+      "recall": {
+        "lower": 0.13205803124759485,
+        "upper": 0.19470039775505216
+      },
+      "f1": {
+        "lower": 0.09968895556321064,
+        "upper": 0.1436355314309584
+      },
+      "auroc": {
+        "lower": 0.758182091361844,
+        "upper": 0.8052498753702487
+      },
+      "auprc": {
+        "lower": 0.050004944063304545,
+        "upper": 0.07772965536998311
+      },
+      "specificity": {
+        "lower": 0.9771262256426932,
+        "upper": 0.9809034257221331
+      },
+      "false_positive_rate": {
+        "lower": 0.019096574277866953,
+        "upper": 0.02287377435730668
+      }
+    },
+    "v1_weighted": {
+      "accuracy": {
+        "lower": 0.9651312478426509,
+        "upper": 0.9700665757076493
+      },
+      "precision": {
+        "lower": 0.07983264825288104,
+        "upper": 0.11606176013156637
+      },
+      "recall": {
+        "lower": 0.13205803124759485,
+        "upper": 0.19470039775505216
+      },
+      "f1": {
+        "lower": 0.09968895556321064,
+        "upper": 0.1436355314309584
+      },
+      "auroc": {
+        "lower": 0.758182091361844,
+        "upper": 0.8052498753702487
+      },
+      "auprc": {
+        "lower": 0.050004944063304545,
+        "upper": 0.07772965536998311
+      },
+      "specificity": {
+        "lower": 0.9771262256426932,
+        "upper": 0.9809034257221331
+      },
+      "false_positive_rate": {
+        "lower": 0.019096574277866953,
+        "upper": 0.02287377435730668
+      }
+    },
+    "original_proposed": {
+      "accuracy": {
+        "lower": 0.96588307395376,
+        "upper": 0.970380395891632
+      },
+      "precision": {
+        "lower": 0.0692768574218365,
+        "upper": 0.10711479271356784
+      },
+      "recall": {
+        "lower": 0.11331445333240867,
+        "upper": 0.17006323731007278
+      },
+      "f1": {
+        "lower": 0.08605357146787536,
+        "upper": 0.1311061405444218
+      },
+      "auroc": {
+        "lower": 0.7481832315901237,
+        "upper": 0.7937541382796179
+      },
+      "auprc": {
+        "lower": 0.046216387571883864,
+        "upper": 0.07184894723557923
+      },
+      "specificity": {
+        "lower": 0.9778859284408329,
+        "upper": 0.9813031014631615
+      },
+      "false_positive_rate": {
+        "lower": 0.01869689853683848,
+        "upper": 0.022114071559167118
+      }
+    }
+  },
+  "paired_differences": {
+    "selected_minus_v1_weighted": {
+      "accuracy": {
+        "lower": 0.0,
+        "upper": 0.0
+      },
+      "precision": {
+        "lower": 0.0,
+        "upper": 0.0
+      },
+      "recall": {
+        "lower": 0.0,
+        "upper": 0.0
+      },
+      "f1": {
+        "lower": 0.0,
+        "upper": 0.0
+      },
+      "auroc": {
+        "lower": 0.0,
+        "upper": 0.0
+      },
+      "auprc": {
+        "lower": 0.0,
+        "upper": 0.0
+      },
+      "specificity": {
+        "lower": 0.0,
+        "upper": 0.0
+      },
+      "false_positive_rate": {
+        "lower": 0.0,
+        "upper": 0.0
+      }
+    },
+    "selected_minus_original_proposed": {
+      "accuracy": {
+        "lower": -0.0020140610716601445,
+        "upper": 0.0008583947725876236
+      },
+      "precision": {
+        "lower": -0.006497045805296075,
+        "upper": 0.02370805276294837
+      },
+      "recall": {
+        "lower": -0.0023105303493412325,
+        "upper": 0.04538917031978618
+      },
+      "f1": {
+        "lower": -0.004549756334824129,
+        "upper": 0.030820566991155054
+      },
+      "auroc": {
+        "lower": -0.002091357415152497,
+        "upper": 0.021772701940668368
+      },
+      "auprc": {
+        "lower": -0.002506823332975167,
+        "upper": 0.01295595671317446
+      },
+      "specificity": {
+        "lower": -0.0022955198124569587,
+        "upper": 0.0004974087286473258
+      },
+      "false_positive_rate": {
+        "lower": -0.0004974087286473322,
+        "upper": 0.002295519812456937
+      }
+    }
+  }
+}

@@ -1,7 +1,8 @@
 """
 run_pipeline.py — Master orchestration script.
 
-Runs the entire research pipeline in order:
+Defaults to isolated validation-selected experiments (stage 8).
+Stages 1-7 describe legacy artifact-writing workflows:
 
   Stage 0: Install requirements
   Stage 1: Data inspection (Phase 1)
@@ -13,10 +14,9 @@ Runs the entire research pipeline in order:
   Stage 7: Visualize results (Phase 10)
 
 Usage:
-    python src/run_pipeline.py                      # full pipeline
+    python src/run_pipeline.py                      # isolated experiments
     python src/run_pipeline.py --stages 1 2         # audit only
-    python src/run_pipeline.py --stages 4 5         # training only
-    python src/run_pipeline.py --epochs 5           # short training run
+    python src/run_pipeline.py --stages 8 --epochs 6 # bounded training run
 """
 
 from __future__ import annotations
@@ -96,6 +96,7 @@ def run(cmd: list[str], check: bool = True) -> int:
 
 
 STAGES = {
+    8: ("Isolated validation-selected TCN experiments", PY_CMD + ["-B", "-X", "utf8", "src/run_experiments.py"]),
     1: ("Data Inspection",        PY_CMD + ["-X", "utf8", "src/data_inspection.py"]),
     2: ("Data-Quality Audit",     PY_CMD + ["-X", "utf8", "src/data_quality_audit.py"]),
     3: ("Preprocessing",          PY_CMD + ["-X", "utf8", "src/preprocessing.py"]),
@@ -109,14 +110,13 @@ STAGES = {
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--stages", nargs="+", type=int,
-                        default=list(STAGES.keys()),
-                        help="Which stages to run (default: all)")
+                        default=[8],
+                        help="Default: safe isolated experiments (8). Stages 1-7 are legacy artifact writers.")
     parser.add_argument("--epochs", type=int, default=None,
                         help="Max epochs for deep learning models")
-    parser.add_argument("--models", nargs="+",
-                        default=["lr", "xgb", "lstm", "gru", "tcn"],
-                        help="Which baselines to train in stage 4")
     args = parser.parse_args()
+    if any(stage in args.stages for stage in (4, 5)):
+        parser.error("Legacy training stages 4/5 evaluate every model on test. Use stage 8 for validation-only selection; direct legacy scripts require a new --output-dir.")
 
     print("=" * 65)
     print("  Missingness-Aware TCN — Full Research Pipeline")
@@ -128,28 +128,18 @@ def main() -> None:
             continue
 
         name, cmd = STAGES[stage_id]
+        if stage_id == 8 and args.epochs:
+            cmd = cmd + ["--epochs", str(args.epochs)]
         print(f"\n{'='*65}")
         print(f"  STAGE {stage_id}: {name}")
         print(f"{'='*65}")
-
-        if stage_id == 4:
-            cmd = PY_CMD + ["-X", "utf8", "src/train_baselines.py", "--models"] + args.models
-            if args.epochs:
-                cmd += ["--epochs", str(args.epochs)]
-
-        elif stage_id == 5:
-            cmd = PY_CMD + ["-X", "utf8", "src/train_proposed_tcn.py"]
-            if args.epochs:
-                cmd += ["--epochs", str(args.epochs)]
 
         run(cmd)
 
     print("\n" + "="*65)
     print("  Pipeline complete.")
-    print("  Results:  results/")
-    print("  Figures:  figures/")
-    print("  Models:   models/")
-    print("  Logs:     logs/")
+    print("  Stage 8 artifacts: experiments/<unique-run>/")
+    print("  Legacy stages may write results/, figures/, models/, logs/.")
     print("="*65)
 
 

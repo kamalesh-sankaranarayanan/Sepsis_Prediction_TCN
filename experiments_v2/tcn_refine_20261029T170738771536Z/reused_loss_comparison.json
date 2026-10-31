@@ -1,0 +1,286 @@
+[
+  {
+    "name": "historical_proposed_retuned",
+    "reused_prior_experiment": true,
+    "validation": {
+      "accuracy": 0.9715301377213379,
+      "precision": 0.1074788334901223,
+      "recall": 0.1508748761967646,
+      "f1": 0.12553220711440735,
+      "specificity": 0.9827977752695922,
+      "auroc": 0.7857440657408628,
+      "auprc": 0.059715005924567785,
+      "threshold": 0.05235591530799866,
+      "tn": 216816,
+      "fp": 3795,
+      "fn": 2572,
+      "tp": 457,
+      "hours": 223640,
+      "positive_hours": 3029,
+      "false_positive_rate": 0.017202224730407823,
+      "alert_fraction": 0.01901269898050438,
+      "false_positives_per_1000_negative_hours": 17.202224730407824
+    },
+    "operating_points": {
+      "selected": {
+        "threshold": 0.05235591530799866,
+        "precision": 0.1074788334901223,
+        "recall": 0.1508748761967646,
+        "f1": 0.12553220711440735,
+        "false_positive_rate": 0.017202224730407823,
+        "tp": 457,
+        "fp": 3795
+      },
+      "reason": "Maximum validation F1 subject to hourly FPR <= 0.030; lowest threshold wins ties",
+      "unrestricted_max_f1": {
+        "threshold": 0.05235591530799866,
+        "precision": 0.1074788334901223,
+        "recall": 0.1508748761967646,
+        "f1": 0.12553220711440735,
+        "false_positive_rate": 0.017202224730407823,
+        "tp": 457,
+        "fp": 3795
+      },
+      "precision_at_least_10pct": {
+        "threshold": 0.050678402185440063,
+        "precision": 0.1,
+        "recall": 0.16209970287223507,
+        "f1": 0.12369316034765084,
+        "false_positive_rate": 0.020030732828372113,
+        "tp": 491,
+        "fp": 4419
+      },
+      "precision_at_least_15pct": {
+        "threshold": 0.08163358271121979,
+        "precision": 0.15030674846625766,
+        "recall": 0.01617695609111918,
+        "f1": 0.029210134128166917,
+        "false_positive_rate": 0.0012556037550258148,
+        "tp": 49,
+        "fp": 277
+      },
+      "recall_at_least_20pct": {
+        "threshold": 0.04637569561600685,
+        "precision": 0.08871321914800176,
+        "recall": 0.20006602839220866,
+        "f1": 0.122920892494929,
+        "false_positive_rate": 0.028217087996518758,
+        "tp": 606,
+        "fp": 6225
+      }
+    }
+  },
+  {
+    "name": "bce",
+    "reused_prior_experiment": true,
+    "validation": {
+      "accuracy": 0.9595957789304239,
+      "precision": 0.08429065743944637,
+      "recall": 0.2010564542753384,
+      "f1": 0.11878291398478642,
+      "specificity": 0.970010561576712,
+      "auroc": 0.7849057968854017,
+      "auprc": 0.06088129187307151,
+      "threshold": 0.04384929686784744,
+      "tn": 213995,
+      "fp": 6616,
+      "fn": 2420,
+      "tp": 609,
+      "hours": 223640,
+      "positive_hours": 3029,
+      "false_positive_rate": 0.02998943842328805,
+      "alert_fraction": 0.03230638526202826,
+      "false_positives_per_1000_negative_hours": 29.98943842328805
+    },
+    "operating_points": {
+      "selected": {
+        "threshold": 0.04384929686784744,
+        "precision": 0.08429065743944637,
+        "recall": 0.2010564542753384,
+        "f1": 0.11878291398478642,
+        "false_positive_rate": 0.02998943842328805,
+        "tp": 609,
+        "fp": 6616
+      },
+      "reason": "Maximum validation F1 subject to hourly FPR <= 0.030; lowest threshold wins ties",
+      "unrestricted_max_f1": {
+        "threshold": 0.04384929686784744,
+        "precision": 0.08429065743944637,
+        "recall": 0.2010564542753384,
+        "f1": 0.11878291398478642,
+        "false_positive_rate": 0.02998943842328805,
+        "tp": 609,
+        "fp": 6616
+      },
+      "precision_at_least_10pct": {
+        "threshold": 0.058823633939027786,
+        "precision": 0.1,
+        "recall": 0.12182238362495873,
+        "f1": 0.10983777347819616,
+        "false_positive_rate": 0.015053646463684948,
+        "tp": 369,
+        "fp": 3321
+      },
+      "precision_at_least_15pct": {
+        "threshold": 0.09723284095525742,
+        "precision": 0.15007656967840735,
+        "recall": 0.03235391218223836,
+        "f1": 0.053231939163498096,
+        "false_positive_rate": 0.0025157403755932386,
+        "tp": 98,
+        "fp": 555
+      },
+      "recall_at_least_20pct": {
+        "threshold": 0.04392343387007713,
+        "precision": 0.08422515635858235,
+        "recall": 0.20006602839220866,
+        "f1": 0.11854460093896714,
+        "false_positive_rate": 0.029867051053664596,
+        "tp": 606,
+        "fp": 6589
+      }
+    }
+  },
+  {
+    "name": "weighted_bce",
+    "reused_prior_experiment": true,
+    "validation": {
+      "accuracy": 0.9663566446074048,
+      "precision": 0.100160113858744,
+      "recall": 0.18586992406734895,
+      "f1": 0.13017341040462427,
+      "specificity": 0.9770727660905395,
+      "auroc": 0.7889244605350146,
+      "auprc": 0.06427447301660816,
+      "threshold": 0.7500504851341248,
+      "tn": 215553,
+      "fp": 5058,
+      "fn": 2466,
+      "tp": 563,
+      "hours": 223640,
+      "positive_hours": 3029,
+      "false_positive_rate": 0.022927233909460543,
+      "alert_fraction": 0.025134144160257558,
+      "false_positives_per_1000_negative_hours": 22.927233909460544
+    },
+    "operating_points": {
+      "selected": {
+        "threshold": 0.7500504851341248,
+        "precision": 0.100160113858744,
+        "recall": 0.18586992406734895,
+        "f1": 0.13017341040462427,
+        "false_positive_rate": 0.022927233909460543,
+        "tp": 563,
+        "fp": 5058
+      },
+      "reason": "Maximum validation F1 subject to hourly FPR <= 0.030; lowest threshold wins ties",
+      "unrestricted_max_f1": {
+        "threshold": 0.7500504851341248,
+        "precision": 0.100160113858744,
+        "recall": 0.18586992406734895,
+        "f1": 0.13017341040462427,
+        "false_positive_rate": 0.022927233909460543,
+        "tp": 563,
+        "fp": 5058
+      },
+      "precision_at_least_10pct": {
+        "threshold": 0.749922513961792,
+        "precision": 0.1,
+        "recall": 0.18586992406734895,
+        "f1": 0.13003811063633214,
+        "false_positive_rate": 0.02296802969933503,
+        "tp": 563,
+        "fp": 5067
+      },
+      "precision_at_least_15pct": {
+        "threshold": 0.8129291534423828,
+        "precision": 0.15,
+        "recall": 0.07527236711786069,
+        "f1": 0.10024181138711805,
+        "false_positive_rate": 0.005856462279759395,
+        "tp": 228,
+        "fp": 1292
+      },
+      "recall_at_least_20pct": {
+        "threshold": 0.7372917532920837,
+        "precision": 0.0925700365408039,
+        "recall": 0.20072631231429514,
+        "f1": 0.12670626237365842,
+        "false_positive_rate": 0.02701587862799226,
+        "tp": 608,
+        "fp": 5960
+      }
+    }
+  },
+  {
+    "name": "focal",
+    "reused_prior_experiment": true,
+    "validation": {
+      "accuracy": 0.9646664281881595,
+      "precision": 0.09167085637673873,
+      "recall": 0.180587652690657,
+      "f1": 0.1216096042685638,
+      "specificity": 0.9754318687644769,
+      "auroc": 0.7786559270706022,
+      "auprc": 0.05670431740091967,
+      "threshold": 0.297896146774292,
+      "tn": 215191,
+      "fp": 5420,
+      "fn": 2482,
+      "tp": 547,
+      "hours": 223640,
+      "positive_hours": 3029,
+      "false_positive_rate": 0.02456813123552316,
+      "alert_fraction": 0.026681273475228046,
+      "false_positives_per_1000_negative_hours": 24.56813123552316
+    },
+    "operating_points": {
+      "selected": {
+        "threshold": 0.297896146774292,
+        "precision": 0.09167085637673873,
+        "recall": 0.180587652690657,
+        "f1": 0.1216096042685638,
+        "false_positive_rate": 0.02456813123552316,
+        "tp": 547,
+        "fp": 5420
+      },
+      "reason": "Maximum validation F1 subject to hourly FPR <= 0.030; lowest threshold wins ties",
+      "unrestricted_max_f1": {
+        "threshold": 0.297896146774292,
+        "precision": 0.09167085637673873,
+        "recall": 0.180587652690657,
+        "f1": 0.1216096042685638,
+        "false_positive_rate": 0.02456813123552316,
+        "tp": 547,
+        "fp": 5420
+      },
+      "precision_at_least_10pct": {
+        "threshold": 0.30256906151771545,
+        "precision": 0.1,
+        "recall": 0.1508748761967646,
+        "f1": 0.12027898407685221,
+        "false_positive_rate": 0.018643675972639624,
+        "tp": 457,
+        "fp": 4113
+      },
+      "precision_at_least_15pct": {
+        "threshold": 0.33715876936912537,
+        "precision": 0.15,
+        "recall": 0.02872235061076263,
+        "f1": 0.04821280133000831,
+        "false_positive_rate": 0.0022347027120134537,
+        "tp": 87,
+        "fp": 493
+      },
+      "recall_at_least_20pct": {
+        "threshold": 0.2945532500743866,
+        "precision": 0.08433064291678263,
+        "recall": 0.20006602839220866,
+        "f1": 0.11864904552129221,
+        "false_positive_rate": 0.02982625526379011,
+        "tp": 606,
+        "fp": 6580
+      }
+    }
+  }
+]

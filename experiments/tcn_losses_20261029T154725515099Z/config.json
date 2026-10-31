@@ -1,0 +1,48 @@
+{
+  "epochs": 6,
+  "patience": 2,
+  "seed": 42,
+  "threads": 4,
+  "max_estimated_seconds": 1200.0,
+  "output": "C:\\Users\\sanka\\OneDrive\\Desktop\\SepsisPrediction\\experiments\\tcn_losses_20261029T154725515099Z",
+  "model": {
+    "num_channels": [
+      64,
+      64,
+      64,
+      64
+    ],
+    "kernel_size": 3,
+    "dropout": 0.2
+  },
+  "input": "clinical + 1-observed",
+  "n_input": 80,
+  "max_rows": 72,
+  "batch_size": 64,
+  "lr": 0.001,
+  "weight_decay": 0.0001,
+  "grad_clip": 1.0,
+  "selection": "maximum validation AUPRC; ties by F1",
+  "threshold_selection": "exact validation maximum F1, lowest threshold wins ties",
+  "focal": {
+    "gamma": 2.0,
+    "positive_alpha": 0.75
+  },
+  "device": "cpu",
+  "python": "3.13.5",
+  "torch": "2.8.0+cpu",
+  "numpy": "2.3.3",
+  "git_head": "43a2e7d2f2eec4375d1bb1672ee60093a11293e0",
+  "manifest_sha256": "64eca4a130c0d1da3e7cc31d9f23fcacc0aef0b9fca7ec2f939f84977cba9b83",
+  "preprocessing_sha256": "9b9dcdd4f452cc7ea73a82cdb56c3f820530c41bac6e9b19e5c9988b872d3193",
+  "source_sha256": {
+    "run_experiments.py": "bfdfa5e19786a20fa9e76367d6118f4242e533b6353cd3144bdd26d5726d7127",
+    "study.py": "3f21288d9fe2afdfcb4f5dd08b36eefb29be94837e91bc8c822a6cc2dab5a17d",
+    "models.py": "ac205964ba805a892454c9b9f416d8836ef65fa37cb1850640a470b3377e3ee7"
+  },
+  "train_hours": 1039892,
+  "train_positive_hours": 14275,
+  "pos_weight": 71.84707530647987,
+  "val_hours": 223640,
+  "val_positive_hours": 3029
+}

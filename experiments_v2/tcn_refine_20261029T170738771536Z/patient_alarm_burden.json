@@ -1,0 +1,10 @@
+{
+  "definition": "any threshold crossing within first-72-row prefix; not an onset-specific clinical alarm measure",
+  "patients": 6051,
+  "patients_with_any_threshold_crossing": 815,
+  "patients_without_positive_prefix_labels": 5722,
+  "such_patients_with_any_threshold_crossing": 685,
+  "fraction_negative_prefix_patients_with_any_crossing": 0.11971338692764767,
+  "patients_with_positive_prefix_labels": 329,
+  "such_patients_with_any_crossing": 130
+}
